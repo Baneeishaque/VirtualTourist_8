@@ -8,20 +8,22 @@
 
 /* Begin PBXBuildFile section */
 		09669943202F461E0075E391 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09669942202F461E0075E391 /* AppDelegate.swift */; };
-		09669945202F461E0075E391 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09669944202F461E0075E391 /* ViewController.swift */; };
+		09669945202F461E0075E391 /* MapDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09669944202F461E0075E391 /* MapDetailViewController.swift */; };
 		09669948202F461E0075E391 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 09669946202F461E0075E391 /* Main.storyboard */; };
 		0966994A202F461E0075E391 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 09669949202F461E0075E391 /* Assets.xcassets */; };
 		0966994D202F461E0075E391 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0966994B202F461E0075E391 /* LaunchScreen.storyboard */; };
+		09669957202F47120075E391 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09669956202F47120075E391 /* MapViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		0966993F202F461E0075E391 /* VirtualTourist_8.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VirtualTourist_8.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		09669942202F461E0075E391 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		09669944202F461E0075E391 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		09669944202F461E0075E391 /* MapDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapDetailViewController.swift; sourceTree = "<group>"; };
 		09669947202F461E0075E391 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		09669949202F461E0075E391 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0966994C202F461E0075E391 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		0966994E202F461E0075E391 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		09669956202F47120075E391 /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,14 +56,31 @@
 		09669941202F461E0075E391 /* VirtualTourist_8 */ = {
 			isa = PBXGroup;
 			children = (
+				09669955202F46C80075E391 /* FlickrClient */,
+				09669954202F46B00075E391 /* Model */,
 				09669942202F461E0075E391 /* AppDelegate.swift */,
-				09669944202F461E0075E391 /* ViewController.swift */,
+				09669956202F47120075E391 /* MapViewController.swift */,
+				09669944202F461E0075E391 /* MapDetailViewController.swift */,
 				09669946202F461E0075E391 /* Main.storyboard */,
 				09669949202F461E0075E391 /* Assets.xcassets */,
 				0966994B202F461E0075E391 /* LaunchScreen.storyboard */,
 				0966994E202F461E0075E391 /* Info.plist */,
 			);
 			path = VirtualTourist_8;
+			sourceTree = "<group>";
+		};
+		09669954202F46B00075E391 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		09669955202F46C80075E391 /* FlickrClient */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = FlickrClient;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -137,7 +156,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				09669945202F461E0075E391 /* ViewController.swift in Sources */,
+				09669945202F461E0075E391 /* MapDetailViewController.swift in Sources */,
+				09669957202F47120075E391 /* MapViewController.swift in Sources */,
 				09669943202F461E0075E391 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
