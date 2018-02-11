@@ -13,6 +13,12 @@
 		0966994A202F461E0075E391 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 09669949202F461E0075E391 /* Assets.xcassets */; };
 		0966994D202F461E0075E391 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0966994B202F461E0075E391 /* LaunchScreen.storyboard */; };
 		09669957202F47120075E391 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09669956202F47120075E391 /* MapViewController.swift */; };
+		0966995A203060980075E391 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 09669958203060980075E391 /* Model.xcdatamodeld */; };
+		0966995C203060C40075E391 /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0966995B203060C40075E391 /* CoreDataStack.swift */; };
+		09669961203062A90075E391 /* PinImage+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0966995D203062A90075E391 /* PinImage+CoreDataClass.swift */; };
+		09669962203062A90075E391 /* PinImage+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0966995E203062A90075E391 /* PinImage+CoreDataProperties.swift */; };
+		09669963203062A90075E391 /* PinAnnotation+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0966995F203062A90075E391 /* PinAnnotation+CoreDataClass.swift */; };
+		09669964203062A90075E391 /* PinAnnotation+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09669960203062A90075E391 /* PinAnnotation+CoreDataProperties.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +30,12 @@
 		0966994C202F461E0075E391 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		0966994E202F461E0075E391 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		09669956202F47120075E391 /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
+		09669959203060980075E391 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
+		0966995B203060C40075E391 /* CoreDataStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
+		0966995D203062A90075E391 /* PinImage+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "PinImage+CoreDataClass.swift"; path = "../PinImage+CoreDataClass.swift"; sourceTree = "<group>"; };
+		0966995E203062A90075E391 /* PinImage+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "PinImage+CoreDataProperties.swift"; path = "../PinImage+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		0966995F203062A90075E391 /* PinAnnotation+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "PinAnnotation+CoreDataClass.swift"; path = "../PinAnnotation+CoreDataClass.swift"; sourceTree = "<group>"; };
+		09669960203062A90075E391 /* PinAnnotation+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "PinAnnotation+CoreDataProperties.swift"; path = "../PinAnnotation+CoreDataProperties.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,6 +84,12 @@
 		09669954202F46B00075E391 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				0966995D203062A90075E391 /* PinImage+CoreDataClass.swift */,
+				0966995E203062A90075E391 /* PinImage+CoreDataProperties.swift */,
+				0966995F203062A90075E391 /* PinAnnotation+CoreDataClass.swift */,
+				09669960203062A90075E391 /* PinAnnotation+CoreDataProperties.swift */,
+				09669958203060980075E391 /* Model.xcdatamodeld */,
+				0966995B203060C40075E391 /* CoreDataStack.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -156,9 +174,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0966995C203060C40075E391 /* CoreDataStack.swift in Sources */,
 				09669945202F461E0075E391 /* MapDetailViewController.swift in Sources */,
 				09669957202F47120075E391 /* MapViewController.swift in Sources */,
 				09669943202F461E0075E391 /* AppDelegate.swift in Sources */,
+				09669962203062A90075E391 /* PinImage+CoreDataProperties.swift in Sources */,
+				09669964203062A90075E391 /* PinAnnotation+CoreDataProperties.swift in Sources */,
+				0966995A203060980075E391 /* Model.xcdatamodeld in Sources */,
+				09669963203062A90075E391 /* PinAnnotation+CoreDataClass.swift in Sources */,
+				09669961203062A90075E391 /* PinImage+CoreDataClass.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -324,6 +348,19 @@
 			defaultConfigurationIsVisible = 0;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		09669958203060980075E391 /* Model.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				09669959203060980075E391 /* Model.xcdatamodel */,
+			);
+			currentVersion = 09669959203060980075E391 /* Model.xcdatamodel */;
+			path = Model.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 09669937202F461E0075E391 /* Project object */;
 }
