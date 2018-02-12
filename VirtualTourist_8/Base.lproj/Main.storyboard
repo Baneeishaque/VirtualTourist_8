@@ -49,6 +49,24 @@
             </objects>
             <point key="canvasLocation" x="908" y="123.68815592203899"/>
         </scene>
+        <!--Map Detail View Controller-->
+        <scene sceneID="9jf-9H-OL6">
+            <objects>
+                <viewController storyboardIdentifier="MapDetailViewController" id="R27-gA-abT" customClass="MapDetailViewController" customModule="VirtualTourist_8" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Tdq-FA-gCu"/>
+                        <viewControllerLayoutGuide type="bottom" id="fmg-QL-cCZ"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="cMJ-gC-JAl">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="YKM-Qe-AtF" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1754" y="124"/>
+        </scene>
         <!--Navigation Controller-->
         <scene sceneID="A1A-aB-7GO">
             <objects>

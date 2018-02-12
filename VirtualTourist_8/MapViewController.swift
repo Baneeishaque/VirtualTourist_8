@@ -159,12 +159,9 @@ extension MapViewController {
         mapView.deselectAnnotation(view.annotation, animated: true)
         
         if let locationAnnotation = view.annotation {
-            //            let theLocation = locationAnnotation.coordinate
-            
             if (!buttonOn) {
                 // Mark: The buttonOn = false so clicking the pinAnnotation sends you to the detailView.
-//                self.moveToDetailView(locationAnnotation)
-                //                self.moveToDetailView(theLocation)
+                self.moveToDetailView(locationAnnotation)
             } else {
                 // Mark: Remove the PinAnnotation from the mapView
                 if (deleteAnnotationFromCoreData(locationAnnotation)) {
@@ -172,6 +169,13 @@ extension MapViewController {
                 }
             }
         }
+    }
+    
+    // Mark: This function sets the value of locationAnnotation property for MapDetailViewController
+    func moveToDetailView(_ location:MKAnnotation) {
+        let mapViewDetailController = self.storyboard?.instantiateViewController(withIdentifier: "MapDetailViewController") as! MapDetailViewController
+        mapViewDetailController.locationAnnotation = location
+        navigationController?.pushViewController(mapViewDetailController, animated: true)
     }
     
     
