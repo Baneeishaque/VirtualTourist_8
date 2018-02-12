@@ -11,5 +11,15 @@ import CoreData
 
 
 public class PinAnnotation: NSManagedObject {
+    
+    convenience init(lat:Double, long:Double, context:NSManagedObjectContext) {
+        if let ent = NSEntityDescription.entity(forEntityName: "PinAnnotation", in: context) {
+            self.init(entity:ent, insertInto: context)
+            self.lat = lat
+            self.long = long
+        } else {
+            fatalError("Unable to find entity!")
+        }
+    }
 
 }
