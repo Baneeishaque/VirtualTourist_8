@@ -22,6 +22,7 @@
 		096699662031519F0075E391 /* FlickrAPIConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 096699652031519F0075E391 /* FlickrAPIConstants.swift */; };
 		09669968203151CA0075E391 /* FlickrAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09669967203151CA0075E391 /* FlickrAPIClient.swift */; };
 		0966996A203152170075E391 /* FlickrAPIConvenience.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09669969203152170075E391 /* FlickrAPIConvenience.swift */; };
+		0966996C2033529E0075E391 /* CustomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0966996B2033529E0075E391 /* CustomCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +43,7 @@
 		096699652031519F0075E391 /* FlickrAPIConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlickrAPIConstants.swift; sourceTree = "<group>"; };
 		09669967203151CA0075E391 /* FlickrAPIClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlickrAPIClient.swift; sourceTree = "<group>"; };
 		09669969203152170075E391 /* FlickrAPIConvenience.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlickrAPIConvenience.swift; sourceTree = "<group>"; };
+		0966996B2033529E0075E391 /* CustomCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,6 +81,7 @@
 				09669942202F461E0075E391 /* AppDelegate.swift */,
 				09669956202F47120075E391 /* MapViewController.swift */,
 				09669944202F461E0075E391 /* MapDetailViewController.swift */,
+				0966996B2033529E0075E391 /* CustomCell.swift */,
 				09669946202F461E0075E391 /* Main.storyboard */,
 				09669949202F461E0075E391 /* Assets.xcassets */,
 				0966994B202F461E0075E391 /* LaunchScreen.storyboard */,
@@ -184,6 +187,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0966995C203060C40075E391 /* CoreDataStack.swift in Sources */,
+				0966996C2033529E0075E391 /* CustomCell.swift in Sources */,
 				09669945202F461E0075E391 /* MapDetailViewController.swift in Sources */,
 				09669968203151CA0075E391 /* FlickrAPIClient.swift in Sources */,
 				0966996A203152170075E391 /* FlickrAPIConvenience.swift in Sources */,

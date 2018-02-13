@@ -15,11 +15,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     let stack = CoreDataStack(modelName: "Model")!
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        //                do {
-        //                    try stack.dropAllData()
-        //                } catch {
-        //                    print("Error on delete:\(error.localizedDescription)")
-        //                }
+                        do {
+                            try stack.dropAllData()
+                        } catch {
+                            print("Error on delete:\(error.localizedDescription)")
+                        }
         return true
     }
 

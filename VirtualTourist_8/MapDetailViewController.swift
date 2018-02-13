@@ -11,7 +11,6 @@ import CoreData
 import MapKit
 
 class MapDetailViewController: UIViewController, MKMapViewDelegate, UICollectionViewDelegate, UICollectionViewDataSource {
-    
    
     // Mark: The locationAnnotation data that is passed from MapViewController
     var locationAnnotation:MKAnnotation!
@@ -19,6 +18,12 @@ class MapDetailViewController: UIViewController, MKMapViewDelegate, UICollection
     var methodParameters:[String:AnyObject]!
     // Mark: Declaration of the delegate used to access CoreDataStack
     let delegate = UIApplication.shared.delegate as! AppDelegate
+    // Mark: FetchedResultsController declaration
+    var fetchedResultsController:NSFetchedResultsController<NSFetchRequestResult>?
+    // Mark: This property is for the current PinAnnotation
+    var pin:PinAnnotation?
+    // Mark: declaration of PinImages variable
+    var pinImages:[PinImage]!
     
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var collectionView: UICollectionView!
@@ -41,7 +46,10 @@ class MapDetailViewController: UIViewController, MKMapViewDelegate, UICollection
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        // Mark pin is the current PinAnnotation for the PinImages
+        pin = self.getCurrentPinAnnotation(locationAnnotation)
         
+        // Mark: Retrieve the data from API call
         getArrayOfPhotos(theLocation: locationAnnotation)
     }
 
@@ -49,11 +57,34 @@ class MapDetailViewController: UIViewController, MKMapViewDelegate, UICollection
 
 
 }
-
+// Mark: CoreData functionality is located here
 extension MapDetailViewController {
+    // Mark: This function retrieves the CoreDataStack
     func getCoreDataStack() -> CoreDataStack {
         let stack = delegate.stack
         return stack
+    }
+    
+    // Mark: Step 1. Get the actual current PinAnnotation
+    func getCurrentPinAnnotation(_ annotation:MKAnnotation) -> PinAnnotation? {
+        var myAnnotation:PinAnnotation?
+        
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "PinAnnotation")
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "lat", ascending: true), NSSortDescriptor(key: "long", ascending: true)]
+        let pred = NSPredicate(format: "lat = %lf AND long = %lf", annotation.coordinate.latitude, annotation.coordinate.longitude)
+        fetchRequest.predicate = pred
+        
+        fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.getCoreDataStack().context, sectionNameKeyPath: nil, cacheName: nil)
+        do {
+            let results = try fetchedResultsController?.managedObjectContext.fetch(fetchRequest) as! [PinAnnotation]
+            
+            if  results.count > 0 {
+                myAnnotation = results[0]
+            }
+        } catch {
+            print("error occured:\(error.localizedDescription)")
+        }
+        return myAnnotation
     }
 }
 
@@ -65,9 +96,23 @@ extension MapDetailViewController {
 extension MapDetailViewController {
     
     func getArrayOfPhotos(theLocation:MKAnnotation) {
+        // Mark: Builds the parameters for the methodParameters dictionary
         methodParameters = getMethodParametersFromCoordinates(myCoord: theLocation.coordinate)
+        // Mark: passes methodParameters and a managedObjectContext to the getPhotos method
         FlickrAPIClient.sharedInstance().getPhotos(methodParameters, managedObjectContext: self.getCoreDataStack().context) { (success, error, PinImages) in
-                print("PinImages:\(PinImages)")
+            
+            if (success)! {
+                // Mark: We use the main queue becasue we are useing the managedObjectContext which is created on the main Queue
+                DispatchQueue.main.async {
+                    
+                    for item in PinImages! {
+                        item.pinAnnotation = self.pin
+                    }
+                        self.pinImages = PinImages
+                        self.collectionView.reloadData()
+
+                }
+            }
         }
     }
     
@@ -132,15 +177,22 @@ extension MapDetailViewController {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as UICollectionViewCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! CustomCell
+        cell.imageView.image = UIImage(named:"Icon-40")
         
         return cell
         
     
     }
     
+    // Mark: When the collectionView initially loads
     public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 3
+       
+        if let _ = pinImages {
+            return pinImages.count
+        } else {
+            return 0
+        }
     }
     
 }

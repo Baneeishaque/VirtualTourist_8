@@ -60,14 +60,16 @@ extension FlickrAPIClient {
             }
             
             // Mark: This is where photoDictionary value is set
-            self.retrievePhotoWithImageDataNewVersion(photo, managedObjectContext: managedObjectContext, completionHandler: {(photoArray) in
+            self.retrievePhotoWithImageData(photo, managedObjectContext: managedObjectContext, retrievePhotosCompletionHandler: {(photoArray) in
                 completionHandler(true, nil, photoArray)
             })
            
         }
     }
     
-    func retrievePhotoWithImageDataNewVersion(_ photoDictionary:[[String:AnyObject]],managedObjectContext:NSManagedObjectContext, completionHandler handler:@escaping (_ photoArray:[PinImage]?) -> ()) {
+    
+    // Mark: Take the PinImage and add the data to CoreData. Simultaneously, Add those PinImages to an array and pass then back to the completionHandler
+    func retrievePhotoWithImageData(_ photoDictionary:[[String:AnyObject]],managedObjectContext:NSManagedObjectContext, retrievePhotosCompletionHandler handler:@escaping (_ photoArray:[PinImage]?) -> ()) {
         
         // This is the place where we will store PinImage in Core Data
         
@@ -76,10 +78,10 @@ extension FlickrAPIClient {
         DispatchQueue.main.async {
             if (photoDictionary.count == 0) {
                 handler(nil)
-            }else {
+            } else {
                 for item in photoDictionary {
                     if let title = item["title"], let url = item["url_m"] {
-                        let pinPhoto = PinImage(title: title as! String, url: url as! String, image: nil, context: managedObjectContext)
+                        let pinPhoto = PinImage(title: title as? String, url: url as? String, image: nil, context: managedObjectContext)
                         pinImages.append(pinPhoto)
                     }
                 }
