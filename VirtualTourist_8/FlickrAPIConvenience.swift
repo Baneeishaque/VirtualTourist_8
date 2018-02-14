@@ -11,12 +11,12 @@ import CoreData
 
 extension FlickrAPIClient {
     
-    func getPhotos(params:[String:AnyObject], managedObjectContext:NSManagedObjectContext, pin: PinAnnotation, completionHandler: @escaping (_ success:Bool?, _ error:String?,_ photo:[PinImage]?)->()) {
+    func getPhotos(params:[String:AnyObject], managedObjectContext:NSManagedObjectContext, pin: PinAnnotation, completionHandler: @escaping (_ success:Bool?, _ error:String?,_ photo:[PinImage]?,_ globalPages:Int?)->()) {
         
         
         taskForGetPhotos(params) { (data, error) in
             if (error != nil) {
-                completionHandler(false, error?.localizedDescription, nil)
+                completionHandler(false, error?.localizedDescription, nil, nil)
                 return
             }
             
@@ -44,13 +44,14 @@ extension FlickrAPIClient {
             }
             
             //print("photos:\(photos)")
-            
+            // Mark: The pages property holds the number of pages returned by the API.
+            // Mark: This is also returned by the completionHandler in this function.
             guard let pages = photos["pages"] as? Int else {
                 print("Couldn't find the key = pages.")
                 return
             }
             
-            glob_pages = pages
+           
             
             //            print("pages:\(pages)")
             
@@ -63,7 +64,7 @@ extension FlickrAPIClient {
             
             // Mark: This is where photoDictionary value is set
             self.retrievePhotoWithImageData(photoDictionary: photo, managedObjectContext: managedObjectContext, pin: pin, retrievePhotosCompletionHandler: {(photoArray) in
-                completionHandler(true, nil, photoArray)
+                completionHandler(true, nil, photoArray, pages)
             })
            
         }
@@ -90,7 +91,7 @@ extension FlickrAPIClient {
                 }
                 do {
                     try managedObjectContext.save()
-                    print("Images Saved!!!!!!")
+//                    print("Images Saved!!!!!!")
                 } catch {
                     print("There was an error when attempting to save pinImages")
                 }

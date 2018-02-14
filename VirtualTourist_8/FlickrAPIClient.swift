@@ -113,6 +113,6 @@ extension FlickrAPIClient {
     }
 }
 
-// Mark: Gets the number of pages returned from the API
-var glob_pages:Int!
+
+
 

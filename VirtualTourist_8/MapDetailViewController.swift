@@ -148,12 +148,12 @@ extension MapDetailViewController {
         // Mark: Builds the parameters for the methodParameters dictionary
         methodParameters = getMethodParametersFromCoordinates(myCoord: theLocation.coordinate)
         // Mark: passes methodParameters and a managedObjectContext to the getPhotos method
-        FlickrAPIClient.sharedInstance().getPhotos(params: methodParameters, managedObjectContext: self.getCoreDataStack().context, pin: pin! ) { (success, error, PinImages) in
+        FlickrAPIClient.sharedInstance().getPhotos(params: methodParameters, managedObjectContext: self.getCoreDataStack().context, pin: pin! ) { (success, error, PinImages, globalPages) in
             
             if (success)! {
                 // Mark: We use the main queue becasue we are useing the managedObjectContext which is created on the main Queue
                 DispatchQueue.main.async {
-                    
+//                    print("Global pages:\(globalPages)")
                     // Mark: This if let statement keeps the app from breaking in the case that the API doesn't return any Photo information
                     if let _ = PinImages {
                         for item in PinImages! {
