@@ -24,9 +24,8 @@ class MapDetailViewController: UIViewController, MKMapViewDelegate, UICollection
     var pin:PinAnnotation?
     // Mark: declaration of PinImages variable
     var pinImages:[PinImage]!
-    
-    // Mark: declaration for testPinImages variable
-    var coreDataPinImgaes:[PinImage]!
+    // Mark: This variable is used in the getCoreDataPinImages function.
+    var coreDataPinImages:[PinImage]!
     
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var collectionView: UICollectionView!
@@ -52,23 +51,10 @@ class MapDetailViewController: UIViewController, MKMapViewDelegate, UICollection
         // Mark pin is the current PinAnnotation for the PinImages
         pin = self.getCurrentPinAnnotation(locationAnnotation)
         
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "PinImage")
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
+
         
-        let pred = NSPredicate(format: "pinAnnotation = %@", pin!)
-        fetchRequest.predicate = pred
-       
-        do {
-            coreDataPinImgaes = try getCoreDataStack().context.fetch(fetchRequest) as! [PinImage]
-        } catch {
-            print("There was an error retrieving images")
-        }
-        
-        
-        for item in coreDataPinImgaes {
-            print("title:\(item.title), url:\(item.url)")
-        }
-        
+        // Mark: This function decides whether to call getArrayOfPhotos. If there are no PinImages in CoreData then call API else if there are PinImages in CoreData then do not call api. Retrieve the Data from CoreData
+        shouldCallGetArrayOfPhotos()
 
         
         // Mark: Retrieve the data from API call
@@ -81,6 +67,46 @@ class MapDetailViewController: UIViewController, MKMapViewDelegate, UICollection
 }
 // Mark: CoreData functionality is located here
 extension MapDetailViewController {
+    
+    func shouldCallGetArrayOfPhotos() {
+        if ((getCoreDataPinImages(pin: pin!)?.count)! < 1) {
+//            print("Call API and save images to CoreData")
+            // Mark: This function makes the API call
+            // Mark: this function retrieves the PinImage data from the Flickr API and puts PinImage data into the pinImages array
+            getArrayOfPhotos(theLocation: locationAnnotation)
+        } else {
+//            print("Get Images from CoreData")
+            // Mark: This function retrieves PinImage data from CoreData and puts the values in the pinImages array
+            self.pinImages = getCoreDataPinImages(pin: pin!)
+            
+        }
+    }
+    
+    func getCoreDataPinImages(pin:PinAnnotation) -> [PinImage]? {
+        
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "PinImage")
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
+        
+        let pred = NSPredicate(format: "pinAnnotation = %@", pin)
+        fetchRequest.predicate = pred
+        
+        do {
+            // Mark: coreDataPinImages is declared at the top of the controller because if I declare it in the function it will be a let property and it has to be a var.
+            self.coreDataPinImages = try getCoreDataStack().context.fetch(fetchRequest) as! [PinImage]
+        } catch {
+            print("There was an error retrieving images")
+        }
+        return coreDataPinImages
+        
+//        for item in coreDataPinImages {
+//            print("title:\(item.title), url:\(item.url)")
+//        }
+    
+    }
+    
+    
+    
+    
     // Mark: This function retrieves the CoreDataStack
     func getCoreDataStack() -> CoreDataStack {
         let stack = delegate.stack
@@ -117,6 +143,7 @@ extension MapDetailViewController {
 // Mark: This is where I build the parameters dictionary that will be used for the API call
 extension MapDetailViewController {
     
+    // Mark: This function makes the API call
     func getArrayOfPhotos(theLocation:MKAnnotation) {
         // Mark: Builds the parameters for the methodParameters dictionary
         methodParameters = getMethodParametersFromCoordinates(myCoord: theLocation.coordinate)
@@ -127,11 +154,15 @@ extension MapDetailViewController {
                 // Mark: We use the main queue becasue we are useing the managedObjectContext which is created on the main Queue
                 DispatchQueue.main.async {
                     
-                    for item in PinImages! {
-                        item.pinAnnotation = self.pin
-                    }
+                    // Mark: This if let statement keeps the app from breaking in the case that the API doesn't return any Photo information
+                    if let _ = PinImages {
+                        for item in PinImages! {
+                            item.pinAnnotation = self.pin
+                        }
                         self.pinImages = PinImages
                         self.collectionView.reloadData()
+                    }
+                    
 
                 }
             }
@@ -198,10 +229,13 @@ extension MapDetailViewController {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
+//        Mark: pinImages array goes here
+        let pinImage = pinImages[indexPath.row]
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! CustomCell
-        cell.imageView.image = UIImage(named:"Icon-40")
-        
+            FlickrAPIClient.sharedInstance().getImageData(url: pinImage.url!) { (data, error) in
+                cell.imageView.image = UIImage(data: data!)
+            }
+
         return cell
         
     
