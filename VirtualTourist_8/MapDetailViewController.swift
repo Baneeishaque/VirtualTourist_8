@@ -25,6 +25,9 @@ class MapDetailViewController: UIViewController, MKMapViewDelegate, UICollection
     // Mark: declaration of PinImages variable
     var pinImages:[PinImage]!
     
+    // Mark: declaration for testPinImages variable
+    var coreDataPinImgaes:[PinImage]!
+    
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var flowLayout: UICollectionViewFlowLayout!
@@ -49,8 +52,34 @@ class MapDetailViewController: UIViewController, MKMapViewDelegate, UICollection
         // Mark pin is the current PinAnnotation for the PinImages
         pin = self.getCurrentPinAnnotation(locationAnnotation)
         
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "PinImage")
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
+        
+        let pred = NSPredicate(format: "pinAnnotation = %@", pin!)
+        fetchRequest.predicate = pred
+       
+        do {
+            coreDataPinImgaes = try getCoreDataStack().context.fetch(fetchRequest) as! [PinImage]
+        } catch {
+            print("There was an error retrieving images")
+        }
+        
+        
+        for item in coreDataPinImgaes {
+            print("title:\(item.title), url:\(item.url)")
+        }
+        
+//        let fetchedRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "PinImage")
+//        fetchedRequest.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true),NSSortDescriptor(key:"url", ascending:true)]
+//        
+//        
+//        fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchedRequest, managedObjectContext: managedObjectContext, sectionNameKeyPath: nil, cacheName: nil)
+//        
+//        let pred = NSPredicate(format: "pinAnnotation = %@", pin)
+//        fetchedRequest.predicate = pred
+        
         // Mark: Retrieve the data from API call
-        getArrayOfPhotos(theLocation: locationAnnotation)
+//        getArrayOfPhotos(theLocation: locationAnnotation)
     }
 
     

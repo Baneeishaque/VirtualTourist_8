@@ -52,9 +52,16 @@ class FlickrAPIClient: NSObject {
     
     // function which uses URLRequest to get the image data
     
-    func getImageData (url:String, completionHandler : @escaping (_ data: Data?, _ error: Error?) -> ()) {
+    func getImageData (url:String, completionHandler : @escaping (_ data: Data?, _ error: String?) -> ()) {
         //request
         // url session.data task
+        session = URLSession.shared
+        
+        if let imageUrl = URL(string: url), let imageData = try? Data(contentsOf:imageUrl) {
+            completionHandler(imageData, nil)
+        } else {
+            completionHandler(nil, "There was an error getting the image")
+        }
     }
     
     

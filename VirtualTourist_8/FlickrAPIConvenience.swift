@@ -85,6 +85,12 @@ extension FlickrAPIClient {
                         pinImages.append(pinPhoto)
                     }
                 }
+                do {
+                    try managedObjectContext.save()
+                    print("Images Saved!!!!!!")
+                } catch {
+                    print("There was an error when attempting to save pinImages")
+                }
                 handler(pinImages)
             }
         }
