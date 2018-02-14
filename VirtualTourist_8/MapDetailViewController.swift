@@ -69,14 +69,7 @@ class MapDetailViewController: UIViewController, MKMapViewDelegate, UICollection
             print("title:\(item.title), url:\(item.url)")
         }
         
-//        let fetchedRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "PinImage")
-//        fetchedRequest.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true),NSSortDescriptor(key:"url", ascending:true)]
-//        
-//        
-//        fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchedRequest, managedObjectContext: managedObjectContext, sectionNameKeyPath: nil, cacheName: nil)
-//        
-//        let pred = NSPredicate(format: "pinAnnotation = %@", pin)
-//        fetchedRequest.predicate = pred
+
         
         // Mark: Retrieve the data from API call
 //        getArrayOfPhotos(theLocation: locationAnnotation)
@@ -128,7 +121,7 @@ extension MapDetailViewController {
         // Mark: Builds the parameters for the methodParameters dictionary
         methodParameters = getMethodParametersFromCoordinates(myCoord: theLocation.coordinate)
         // Mark: passes methodParameters and a managedObjectContext to the getPhotos method
-        FlickrAPIClient.sharedInstance().getPhotos(methodParameters, managedObjectContext: self.getCoreDataStack().context) { (success, error, PinImages) in
+        FlickrAPIClient.sharedInstance().getPhotos(params: methodParameters, managedObjectContext: self.getCoreDataStack().context, pin: pin! ) { (success, error, PinImages) in
             
             if (success)! {
                 // Mark: We use the main queue becasue we are useing the managedObjectContext which is created on the main Queue

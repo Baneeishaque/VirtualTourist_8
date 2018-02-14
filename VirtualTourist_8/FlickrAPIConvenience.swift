@@ -11,7 +11,7 @@ import CoreData
 
 extension FlickrAPIClient {
     
-    func getPhotos(_ params:[String:AnyObject], managedObjectContext:NSManagedObjectContext, completionHandler: @escaping (_ success:Bool?, _ error:String?,_ photo:[PinImage]?)->()) {
+    func getPhotos(params:[String:AnyObject], managedObjectContext:NSManagedObjectContext, pin: PinAnnotation, completionHandler: @escaping (_ success:Bool?, _ error:String?,_ photo:[PinImage]?)->()) {
         
         
         taskForGetPhotos(params) { (data, error) in
@@ -59,8 +59,10 @@ extension FlickrAPIClient {
                 return
             }
             
+//            print("pin lat:\(pin.lat), long:\(pin.long)")
+            
             // Mark: This is where photoDictionary value is set
-            self.retrievePhotoWithImageData(photo, managedObjectContext: managedObjectContext, retrievePhotosCompletionHandler: {(photoArray) in
+            self.retrievePhotoWithImageData(photoDictionary: photo, managedObjectContext: managedObjectContext, pin: pin, retrievePhotosCompletionHandler: {(photoArray) in
                 completionHandler(true, nil, photoArray)
             })
            
@@ -69,7 +71,7 @@ extension FlickrAPIClient {
     
     
     // Mark: Take the PinImage and add the data to CoreData. Simultaneously, Add those PinImages to an array and pass then back to the completionHandler
-    func retrievePhotoWithImageData(_ photoDictionary:[[String:AnyObject]],managedObjectContext:NSManagedObjectContext, retrievePhotosCompletionHandler handler:@escaping (_ photoArray:[PinImage]?) -> ()) {
+    func retrievePhotoWithImageData(photoDictionary:[[String:AnyObject]],managedObjectContext:NSManagedObjectContext, pin:PinAnnotation, retrievePhotosCompletionHandler handler:@escaping (_ photoArray:[PinImage]?) -> ()) {
         
         // This is the place where we will store PinImage in Core Data
         
@@ -82,6 +84,7 @@ extension FlickrAPIClient {
                 for item in photoDictionary {
                     if let title = item["title"], let url = item["url_m"] {
                         let pinPhoto = PinImage(title: title as? String, url: url as? String, image: nil, context: managedObjectContext)
+                        pinPhoto.pinAnnotation = pin
                         pinImages.append(pinPhoto)
                     }
                 }
