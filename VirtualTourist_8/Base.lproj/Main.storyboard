@@ -75,6 +75,9 @@
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <state key="normal" title="New Collection"/>
+                                <connections>
+                                    <action selector="getRandomPhotoPage:" destination="R27-gA-abT" eventType="touchUpInside" id="pAF-j5-yDj"/>
+                                </connections>
                             </button>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="o8Z-mO-2CI">
                                 <rect key="frame" x="0.0" y="220" width="375" height="392"/>

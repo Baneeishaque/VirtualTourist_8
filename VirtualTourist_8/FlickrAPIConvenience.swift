@@ -51,7 +51,7 @@ extension FlickrAPIClient {
                 return
             }
             
-           
+           glob_pages = pages
             
             //            print("pages:\(pages)")
             
@@ -97,6 +97,57 @@ extension FlickrAPIClient {
                 }
                 handler(pinImages)
             }
+        }
+    }
+    
+    func getPhotosWithRandomPageNumber(_ params:[String:AnyObject],_ withPageNumber:Int, completionHandler: @escaping (_ success:Bool?, _ error:String?,_ photos:[[String:AnyObject]]?)->()) {
+        
+        taskForGetPhotosWithPageNumber(params, withPageNumber: withPageNumber) { (data, error) in
+            if (error != nil) {
+                completionHandler(false, error?.localizedDescription, nil)
+                return
+            }
+            
+            let parsedResult:[String:AnyObject]!
+            do {
+                parsedResult = try JSONSerialization.jsonObject(with: data!, options: .allowFragments) as! [String:AnyObject]
+            } catch {
+                print("Couldn't parse data:'\(String(describing: data))'")
+                return
+            }
+            
+            
+            
+            guard let stat = parsedResult["stat"] as? String, stat == "ok" else {
+                print("Flickr returned an error. Error code and status are '\(parsedResult)'")
+                return
+            }
+            
+            guard let photos = parsedResult["photos"] as? [String:AnyObject] else {
+                print("Cannot find key in parsedResult = photos")
+                return
+            }
+            
+            
+            guard let pages = photos["pages"] as? Int else {
+                print("Couldn't find the key = pages.")
+                return
+            }
+            
+            glob_pages = pages
+            
+            guard let photo = photos["photo"] as? [[String:AnyObject]] else {
+                print("Could not find photo array")
+                return
+            }
+            
+//            photoArray = Photo.getPhotoArray(photosDictionary: photo)
+            
+            //            print("photoArray:\(photoArray)")
+            
+            completionHandler(true, nil, photo)
+            
+            
         }
     }
     

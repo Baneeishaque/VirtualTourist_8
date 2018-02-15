@@ -61,6 +61,22 @@ class MapDetailViewController: UIViewController, MKMapViewDelegate, UICollection
 //        getArrayOfPhotos(theLocation: locationAnnotation)
     }
 
+    @IBAction func getRandomPhotoPage(_ sender: Any) {
+        print("test")
+        let pageLimit = 20
+        if let pages = glob_pages, pages >= pageLimit {
+            // Mark: Retrieve a random page within the first 20 pages
+            let randomPage = Int(arc4random_uniform(UInt32(pageLimit))) + 1
+            FlickrAPIClient.sharedInstance().getPhotosWithRandomPageNumber(methodParameters, randomPage, completionHandler: { (success, error, photos) in
+                
+                print("photos:\(photos)")
+                
+            })
+            
+        } else {
+            print("Not enough pages to reload a random collection for this location!")
+        }
+    }
     
 
 

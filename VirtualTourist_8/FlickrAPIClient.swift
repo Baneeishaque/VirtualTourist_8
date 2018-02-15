@@ -50,6 +50,10 @@ class FlickrAPIClient: NSObject {
     }
     
     
+    
+    
+    
+    
     // function which uses URLRequest to get the image data
     
     func getImageData (url:String, completionHandler : @escaping (_ data: Data?, _ error: String?) -> ()) {
@@ -66,6 +70,40 @@ class FlickrAPIClient: NSObject {
         
     }
     
+    func taskForGetPhotosWithPageNumber(_ params:[String:AnyObject], withPageNumber:Int, completionHandlerForGetPhotosTask: @escaping (_ data:Data?, _ error:Error?) -> ()) {
+        
+        var methodParamsWithPageNumbers = params
+        methodParamsWithPageNumbers["page"] = withPageNumber as AnyObject?
+        
+        session = URLSession.shared
+        
+        // Mark: This is the session configuration and I'm setting the default timeout interval to 45 seconds
+        session = setDefaulTimeOutForConfiguration()
+        
+        let request = URLRequest(url: flickrURLRequestFromParameters(methodParamsWithPageNumbers))
+        
+        let task = session.dataTask(with: request) { (data, response, error) in
+            if (error != nil) {
+                print("There was an error:\(String(describing: error))")
+                completionHandlerForGetPhotosTask(nil, error)
+                return
+            }
+            guard let statusCode = (response as? HTTPURLResponse)?.statusCode, statusCode >= 200 && statusCode <= 299 else {
+                print("Your statuscode was out of range.")
+                completionHandlerForGetPhotosTask(nil, error)
+                return
+            }
+            
+            guard let data = data else {
+                print("No data was returned")
+                completionHandlerForGetPhotosTask(nil, error)
+                return
+            }
+            
+            completionHandlerForGetPhotosTask(data, nil)
+        }
+        task.resume()
+    }
     
     
     
@@ -113,6 +151,6 @@ extension FlickrAPIClient {
     }
 }
 
-
+var glob_pages:Int!
 
 
