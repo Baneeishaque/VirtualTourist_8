@@ -51,7 +51,7 @@ extension FlickrAPIClient {
                 return
             }
             
-           glob_pages = pages
+//           glob_pages = pages
             
             //            print("pages:\(pages)")
             
@@ -134,7 +134,7 @@ extension FlickrAPIClient {
                 return
             }
             
-            glob_pages = pages
+//            glob_pages = pages
             
             guard let photo = photos["photo"] as? [[String:AnyObject]] else {
                 print("Could not find photo array")

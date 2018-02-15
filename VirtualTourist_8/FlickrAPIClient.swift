@@ -151,6 +151,6 @@ extension FlickrAPIClient {
     }
 }
 
-var glob_pages:Int!
+//var glob_pages:Int!
 
 

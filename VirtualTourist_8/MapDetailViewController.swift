@@ -27,10 +27,13 @@ class MapDetailViewController: UIViewController, MKMapViewDelegate, UICollection
     // Mark: This variable is used in the getCoreDataPinImages function.
     var coreDataPinImages:[PinImage]!
     
+    var totalNumberOfPhotos:Int!
+    
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var flowLayout: UICollectionViewFlowLayout!
     
+    @IBOutlet weak var newCollectionButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -56,7 +59,10 @@ class MapDetailViewController: UIViewController, MKMapViewDelegate, UICollection
         // Mark: This function decides whether to call getArrayOfPhotos. If there are no PinImages in CoreData then call API else if there are PinImages in CoreData then do not call api. Retrieve the Data from CoreData
         shouldCallGetArrayOfPhotos()
         
-        print("getCoreDataPinImages:\(isCoreDataImagePresent(pin: pin!))")
+        
+        
+        
+//        print("getCoreDataPinImages:\(isCoreDataImagePresent(pin: pin!))")
 
         
         // Mark: Retrieve the data from API call
@@ -66,20 +72,8 @@ class MapDetailViewController: UIViewController, MKMapViewDelegate, UICollection
     
 
     @IBAction func getRandomPhotoPage(_ sender: Any) {
-        print("test")
-        let pageLimit = 20
-        if let pages = glob_pages, pages >= pageLimit {
-            // Mark: Retrieve a random page within the first 20 pages
-            let randomPage = Int(arc4random_uniform(UInt32(pageLimit))) + 1
-            FlickrAPIClient.sharedInstance().getPhotosWithRandomPageNumber(methodParameters, randomPage, completionHandler: { (success, error, photos) in
-                
-                print("photos:\(photos)")
-                
-            })
-            
-        } else {
-            print("Not enough pages to reload a random collection for this location!")
-        }
+        print("totalNumberOfPhotos:\(totalNumberOfPhotos)")
+        
     }
     
 
@@ -97,6 +91,7 @@ extension MapDetailViewController {
     }
     
     // Mark: This function decides if it is appropriate to call getArrayOfPhotos
+    // Mark: This is also where I set the totalNumberOfPhotos property. This is used to decide when I need to disable the newCollection button.
     func shouldCallGetArrayOfPhotos() {
         if (!isCoreDataImagePresent(pin: pin!)) {
 //            print("Call API and save images to CoreData")
@@ -107,7 +102,19 @@ extension MapDetailViewController {
 //            print("Get Images from CoreData")
             // Mark: This function retrieves PinImage data from CoreData and puts the values in the pinImages array
             self.pinImages = getCoreDataPinImages(pin: pin!)
+            totalNumberOfPhotos = self.pinImages.count
+            print("totalNumberOfPhotos:\(self.totalNumberOfPhotos)")
+            disableNewCollectionButtonIfNoPhotos(numberOfPhotos: self.totalNumberOfPhotos)
             
+        }
+    }
+    
+    // Mark: Disable the new Collection button if the number of photos is <= 18
+    func disableNewCollectionButtonIfNoPhotos(numberOfPhotos:Int) {
+        if (numberOfPhotos <= 18) {
+            self.newCollectionButton.isEnabled = false
+        } else {
+            self.newCollectionButton.isEnabled = true
         }
     }
     
@@ -183,6 +190,9 @@ extension MapDetailViewController {
                 // Mark: We use the main queue becasue we are useing the managedObjectContext which is created on the main Queue
                 DispatchQueue.main.async {
 //                    print("Global pages:\(globalPages)")
+                    self.totalNumberOfPhotos = globalPages
+                    print("totalNumberOfPhotos:\(self.totalNumberOfPhotos)")
+                    self.disableNewCollectionButtonIfNoPhotos(numberOfPhotos: self.totalNumberOfPhotos)
                     // Mark: This if let statement keeps the app from breaking in the case that the API doesn't return any Photo information
                     if let _ = PinImages {
                         for item in PinImages! {
