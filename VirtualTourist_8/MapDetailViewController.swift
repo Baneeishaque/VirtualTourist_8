@@ -55,11 +55,15 @@ class MapDetailViewController: UIViewController, MKMapViewDelegate, UICollection
         
         // Mark: This function decides whether to call getArrayOfPhotos. If there are no PinImages in CoreData then call API else if there are PinImages in CoreData then do not call api. Retrieve the Data from CoreData
         shouldCallGetArrayOfPhotos()
+        
+        print("getCoreDataPinImages:\(isCoreDataImagePresent(pin: pin!))")
 
         
         // Mark: Retrieve the data from API call
 //        getArrayOfPhotos(theLocation: locationAnnotation)
     }
+    
+    
 
     @IBAction func getRandomPhotoPage(_ sender: Any) {
         print("test")
@@ -84,8 +88,17 @@ class MapDetailViewController: UIViewController, MKMapViewDelegate, UICollection
 // Mark: CoreData functionality is located here
 extension MapDetailViewController {
     
+    // Mark: Returns a Bool value that tells if CoreData has a PinImage for the PinAnnotation
+    func isCoreDataImagePresent(pin:PinAnnotation) -> Bool {
+        if (getCoreDataPinImages(pin: pin)?.count == 0) {
+            return false
+        }
+        return true
+    }
+    
+    // Mark: This function decides if it is appropriate to call getArrayOfPhotos
     func shouldCallGetArrayOfPhotos() {
-        if ((getCoreDataPinImages(pin: pin!)?.count)! < 1) {
+        if (!isCoreDataImagePresent(pin: pin!)) {
 //            print("Call API and save images to CoreData")
             // Mark: This function makes the API call
             // Mark: this function retrieves the PinImage data from the Flickr API and puts PinImage data into the pinImages array
