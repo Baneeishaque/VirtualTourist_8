@@ -59,14 +59,6 @@ class MapDetailViewController: UIViewController, MKMapViewDelegate, UICollection
         // Mark: This function decides whether to call getArrayOfPhotos. If there are no PinImages in CoreData then call API else if there are PinImages in CoreData then do not call api. Retrieve the Data from CoreData
         shouldCallGetArrayOfPhotos()
         
-        
-        
-        
-//        print("getCoreDataPinImages:\(isCoreDataImagePresent(pin: pin!))")
-
-        
-        // Mark: Retrieve the data from API call
-//        getArrayOfPhotos(theLocation: locationAnnotation)
     }
     
     
@@ -207,11 +199,18 @@ extension MapDetailViewController {
                     
 
                 }
+            } else {
+                // Mark: This is the functionality that handles the error message if the network request fails. I used some optional binding her as well
+                if let myError = error {
+                    self.showAlert(messageText: myError)
+                } else {
+                    self.showAlert(messageText: "There is no error message")
+                }
             }
         }
     }
     
-    // Mark: Get the Random Photos
+    // Mark: API call to retrieve random photos
     func getRandomImagesForPin() {
         let pageLimit = 20
         if let pages = totalNumberOfPages, pages >= pageLimit {
@@ -219,9 +218,17 @@ extension MapDetailViewController {
             
             FlickrAPIClient.sharedInstance().getPhotosWithRandomPageNumber(methodParameters, randomPage, self.getCoreDataStack().context, completionHandler: { (success, error, PinImages) in
                 
+                if (success)! {
                     self.pinImages = PinImages
                     self.collectionView.reloadData()
-                
+                } else {
+                    // Mark: This is the functionality that handles the error message if the network request fails. I used some optional binding her as well
+                    if let myError = error {
+                        self.showAlert(messageText: myError)
+                    } else {
+                        self.showAlert(messageText: "There is no error message")
+                    }
+                }
                 
                 
             })
@@ -342,6 +349,20 @@ extension MapDetailViewController {
         let span = MKCoordinateSpan(latitudeDelta: latDelta, longitudeDelta: longDelta)
         let region = MKCoordinateRegion(center: locationAnnotation.coordinate, span: span)
         self.mapView.setRegion(region, animated: true)
+    }
+}
+
+extension MapDetailViewController {
+    // Mark: This is the alertController functionality that will be called when an error occurs
+    func showAlert(messageText:String) {
+        let alert = UIAlertController(title: "", message: "There was an error trying to retrieve the data:" + messageText, preferredStyle: .alert)
+        
+        alert.addAction(UIAlertAction(title: "Dismiss.", style: .default, handler: { (action) in
+            
+            alert.dismiss(animated: true, completion: nil)
+        }))
+        
+        self.present(alert, animated: true , completion: nil)
     }
 }
 
