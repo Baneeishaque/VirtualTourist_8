@@ -141,9 +141,15 @@ extension FlickrAPIClient {
                 return
             }
             
-//            photoArray = Photo.getPhotoArray(photosDictionary: photo)
-            
-            //            print("photoArray:\(photoArray)")
+//            var count:Int = 0
+//            
+//            for item in photo {
+//                count += 1
+//            }
+//            
+//            print("count:\(count)")
+//            
+//                        print("photoArray:\(photo)")
             
             self.retrieveRandomPhotoImageData(PinImageDictionary: photo, managedObjectContext: managedObjectContext, pinImageCompletionhandler: { (PinImages) in
                 
@@ -164,7 +170,7 @@ extension FlickrAPIClient {
         var pinImages:[PinImage] = [PinImage]()
         
         DispatchQueue.main.async {
-            
+        
             if (PinImageDictionary.count == 0) {
                 handler(nil)
             } else {
