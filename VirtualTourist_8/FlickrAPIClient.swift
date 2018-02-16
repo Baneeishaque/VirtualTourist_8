@@ -82,9 +82,7 @@ class FlickrAPIClient: NSObject {
         
         let request = URLRequest(url: flickrURLRequestFromParameters(methodParamsWithPageNumbers))
         
-        print("url:\(flickrURLRequestFromParameters(methodParamsWithPageNumbers))")
         
-        // https://api.flickr.com/services/rest?page=12&method=flickr.photos.search&format=json&api_key=fd1f75c74e5b08dc2629a7d270ef68e3&bbox=-70.0733347900404,44.1810453624369,-68.0733347900404,46.1810453624369&per_page=18&safe_search=1&extras=url_m&nojsoncallback=1
         
         let task = session.dataTask(with: request) { (data, response, error) in
             if (error != nil) {

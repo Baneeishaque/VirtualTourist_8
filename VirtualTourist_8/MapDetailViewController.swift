@@ -219,13 +219,6 @@ extension MapDetailViewController {
             
             FlickrAPIClient.sharedInstance().getPhotosWithRandomPageNumber(methodParameters, randomPage, self.getCoreDataStack().context, completionHandler: { (success, error, PinImages) in
                 
-//                print("PinImages:\(PinImages)")
-//                print("start")
-//                for item in self.pinImages {
-//                    print("item:\(item.title)")
-//                }
-//                print("stop")
-                
                     self.pinImages = PinImages
                     self.collectionView.reloadData()
                 
@@ -299,10 +292,14 @@ extension MapDetailViewController {
 //        Mark: pinImages array goes here
         let pinImage = pinImages[indexPath.row]
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! CustomCell
+        cell.imageView.image = nil
+        cell.activityIndicator.isHidden = false
+        cell.activityIndicator.startAnimating()
             FlickrAPIClient.sharedInstance().getImageData(url: pinImage.url!) { (data, error) in
                 
                 cell.imageView.image = UIImage(data: data!)
-                
+                cell.activityIndicator.startAnimating()
+                cell.activityIndicator.isHidden = true
                 
             }
 

@@ -101,10 +101,22 @@
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     <color key="backgroundColor" red="1" green="0.14639261740000001" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                 </imageView>
+                                                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="1Z1-A7-a0h">
+                                                    <rect key="frame" x="7" y="7" width="37" height="37"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="37" id="P7z-NM-qs3"/>
+                                                        <constraint firstAttribute="width" constant="37" id="Y2U-JJ-E5k"/>
+                                                    </constraints>
+                                                </activityIndicatorView>
                                             </subviews>
                                         </view>
                                         <color key="backgroundColor" red="1" green="0.54650406309999999" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        <constraints>
+                                            <constraint firstItem="1Z1-A7-a0h" firstAttribute="centerX" secondItem="5EG-xA-vXu" secondAttribute="centerX" id="Ou4-1D-WgK"/>
+                                            <constraint firstItem="1Z1-A7-a0h" firstAttribute="centerY" secondItem="5EG-xA-vXu" secondAttribute="centerY" id="gRg-AV-GfX"/>
+                                        </constraints>
                                         <connections>
+                                            <outlet property="activityIndicator" destination="1Z1-A7-a0h" id="r5u-xz-eqL"/>
                                             <outlet property="imageView" destination="HQT-5C-Qu1" id="Qn1-6I-WcQ"/>
                                         </connections>
                                     </collectionViewCell>
