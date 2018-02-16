@@ -100,7 +100,7 @@ extension FlickrAPIClient {
         }
     }
     
-    func getPhotosWithRandomPageNumber(_ params:[String:AnyObject],_ withPageNumber:Int, completionHandler: @escaping (_ success:Bool?, _ error:String?,_ photos:[[String:AnyObject]]?)->()) {
+    func getPhotosWithRandomPageNumber(_ params:[String:AnyObject],_ withPageNumber:Int,_ managedObjectContext:NSManagedObjectContext, completionHandler: @escaping (_ success:Bool?, _ error:String?,_ photos:[PinImage]?)->()) {
         
         taskForGetPhotosWithPageNumber(params, withPageNumber: withPageNumber) { (data, error) in
             if (error != nil) {
@@ -145,14 +145,40 @@ extension FlickrAPIClient {
             
             //            print("photoArray:\(photoArray)")
             
-            completionHandler(true, nil, photo)
+            self.retrieveRandomPhotoImageData(PinImageDictionary: photo, managedObjectContext: managedObjectContext, pinImageCompletionhandler: { (PinImages) in
+                
+                completionHandler(true, nil, PinImages)
+                
+            })
+            
+            
+            
             
             
         }
     }
     
     
-    
+    func retrieveRandomPhotoImageData(PinImageDictionary:[[String:AnyObject]], managedObjectContext:NSManagedObjectContext, pinImageCompletionhandler handler: @escaping (_ PinImages:[PinImage]?) -> ()) {
+        
+        var pinImages:[PinImage] = [PinImage]()
+        
+        DispatchQueue.main.async {
+            
+            if (PinImageDictionary.count == 0) {
+                handler(nil)
+            } else {
+                for item in PinImageDictionary {
+                    if let title = item["title"], let url = item["url_m"] {
+                        let pinPhoto = PinImage(title: title as? String, url: url as? String, image: nil, context: managedObjectContext)
+                        
+                        pinImages.append(pinPhoto)
+                    }
+                    handler(pinImages)
+                }
+            }
+        }
+    }
     
     
     

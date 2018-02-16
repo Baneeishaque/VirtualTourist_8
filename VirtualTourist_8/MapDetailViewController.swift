@@ -27,7 +27,7 @@ class MapDetailViewController: UIViewController, MKMapViewDelegate, UICollection
     // Mark: This variable is used in the getCoreDataPinImages function.
     var coreDataPinImages:[PinImage]!
     
-    var totalNumberOfPhotos:Int!
+    var totalNumberOfPages:Int!
     
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var collectionView: UICollectionView!
@@ -72,8 +72,9 @@ class MapDetailViewController: UIViewController, MKMapViewDelegate, UICollection
     
 
     @IBAction func getRandomPhotoPage(_ sender: Any) {
-        print("totalNumberOfPhotos:\(totalNumberOfPhotos)")
-        
+//        print("totalNumberOfPages:\(totalNumberOfPages)")
+        // Mark: This gets the random photos from the API call. Nothing is saved to CoreData
+        getRandomImagesForPin()
     }
     
 
@@ -102,16 +103,17 @@ extension MapDetailViewController {
 //            print("Get Images from CoreData")
             // Mark: This function retrieves PinImage data from CoreData and puts the values in the pinImages array
             self.pinImages = getCoreDataPinImages(pin: pin!)
-            totalNumberOfPhotos = self.pinImages.count
-            print("totalNumberOfPhotos:\(self.totalNumberOfPhotos)")
-            disableNewCollectionButtonIfNoPhotos(numberOfPhotos: self.totalNumberOfPhotos)
+            totalNumberOfPages = self.pinImages.count
+            // Mark: We can retrieve the totalNumberOfPhotos when the images are in CoreData
+//            print("totalNumberOfPages:\(self.totalNumberOfPages)")
+            disableNewCollectionButtonIfNoPhotos(numberOfPages: self.totalNumberOfPages)
             
         }
     }
     
     // Mark: Disable the new Collection button if the number of photos is <= 18
-    func disableNewCollectionButtonIfNoPhotos(numberOfPhotos:Int) {
-        if (numberOfPhotos <= 18) {
+    func disableNewCollectionButtonIfNoPhotos(numberOfPages:Int) {
+        if (numberOfPages <= 20) {
             self.newCollectionButton.isEnabled = false
         } else {
             self.newCollectionButton.isEnabled = true
@@ -185,14 +187,15 @@ extension MapDetailViewController {
         methodParameters = getMethodParametersFromCoordinates(myCoord: theLocation.coordinate)
         // Mark: passes methodParameters and a managedObjectContext to the getPhotos method
         FlickrAPIClient.sharedInstance().getPhotos(params: methodParameters, managedObjectContext: self.getCoreDataStack().context, pin: pin! ) { (success, error, PinImages, globalPages) in
-            
+            // Mark: globalPages refers to the number of Pages and there are 18 photos per page.
             if (success)! {
                 // Mark: We use the main queue becasue we are useing the managedObjectContext which is created on the main Queue
                 DispatchQueue.main.async {
 //                    print("Global pages:\(globalPages)")
-                    self.totalNumberOfPhotos = globalPages
-                    print("totalNumberOfPhotos:\(self.totalNumberOfPhotos)")
-                    self.disableNewCollectionButtonIfNoPhotos(numberOfPhotos: self.totalNumberOfPhotos)
+                    self.totalNumberOfPages = globalPages
+                    // Mark: We can get the totalNumberOfPhotos from an API call.
+//                    print("totalNumberOfPages:\(self.totalNumberOfPages)")
+                    self.disableNewCollectionButtonIfNoPhotos(numberOfPages: self.totalNumberOfPages)
                     // Mark: This if let statement keeps the app from breaking in the case that the API doesn't return any Photo information
                     if let _ = PinImages {
                         for item in PinImages! {
@@ -205,6 +208,22 @@ extension MapDetailViewController {
 
                 }
             }
+        }
+    }
+    
+    // Mark: Get the Random Photos
+    func getRandomImagesForPin() {
+        let pageLimit = 20
+        if let pages = totalNumberOfPages, pages >= pageLimit {
+            let randomPage = Int(arc4random_uniform(UInt32(pageLimit))) + 1
+            
+            FlickrAPIClient.sharedInstance().getPhotosWithRandomPageNumber(methodParameters, randomPage, self.getCoreDataStack().context, completionHandler: { (success, error, PinImages) in
+                
+                self.pinImages = PinImages
+                self.collectionView.reloadData()
+                
+            })
+            
         }
     }
     
