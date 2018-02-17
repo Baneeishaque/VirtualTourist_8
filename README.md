@@ -22,3 +22,8 @@ images form the particular location. So as soon as you start the application, yo
 <img width="394" alt="screen shot 2018-02-16 at 10 20 13 pm" src="https://user-images.githubusercontent.com/12214205/36338570-f2edd346-1367-11e8-93c3-dd5f1935166d.png">
 
 3. Click on the pin and it will reveal a new view that displays images from the location that you selected from the map.
+<img width="394" alt="screen shot 2018-02-16 at 10 37 33 pm" src="https://user-images.githubusercontent.com/12214205/36338657-139eb70c-136a-11e8-8609-6bd07273f96b.png">
+
+4. At this point you can press the "new collections" button and get a random set of images from the location that you picked. 
+
+5. To return to the map, click on the "back" button. Once you've returned to the map, you can click the edit button and a red button should appear at the bottom of the map. 
