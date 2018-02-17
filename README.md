@@ -27,3 +27,4 @@ images form the particular location. So as soon as you start the application, yo
 4. At this point you can press the "new collections" button and get a random set of images from the location that you picked. 
 
 5. To return to the map, click on the "back" button. Once you've returned to the map, you can click the edit button and a red button should appear at the bottom of the map. 
+<img width="394" alt="screen shot 2018-02-16 at 10 42 37 pm" src="https://user-images.githubusercontent.com/12214205/36338700-caf0535c-136a-11e8-8817-c6383981e966.png"> At this point, you can select any pin and the pin will be deleted.
